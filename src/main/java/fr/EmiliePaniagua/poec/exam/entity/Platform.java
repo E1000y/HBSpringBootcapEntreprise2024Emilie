@@ -21,7 +21,7 @@ public class Platform {
 
     private String name;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "platforms")
     private List<Game> games = new ArrayList<>();
 
 }

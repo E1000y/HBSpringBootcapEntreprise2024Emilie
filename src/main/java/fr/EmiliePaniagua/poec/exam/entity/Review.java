@@ -30,7 +30,7 @@ public class Review {
     private LocalDateTime ModerationDate;
 
     @ManyToOne
-    private Game gamer;
+    private Gamer gamer;
 
     @ManyToOne
     private Moderator moderator;
