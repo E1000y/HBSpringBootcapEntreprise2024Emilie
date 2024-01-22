@@ -1,15 +1,15 @@
 package fr.EmiliePaniagua.poec.exam.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -28,4 +28,18 @@ public class Review {
     private float note;
 
     private LocalDateTime ModerationDate;
+
+    @ManyToOne
+    private Game gamer;
+
+    @ManyToOne
+    private Moderator moderator;
+
+    public Date getCreatedAt() {
+        return Date.from(createdAt.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    @ManyToOne(optional = false)
+    private Game game;
+
 }

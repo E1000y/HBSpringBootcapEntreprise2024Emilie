@@ -1,13 +1,13 @@
 package fr.EmiliePaniagua.poec.exam.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,5 +20,8 @@ public class Platform {
     private Long id;
 
     private String name;
+
+    @ManyToMany
+    private List<Game> games = new ArrayList<>();
 
 }
