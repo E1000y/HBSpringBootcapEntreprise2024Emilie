@@ -21,7 +21,7 @@ public class ClassificationService implements DAOServiceInterface<Classification
     }
 
     @Override
-    public Classification getObjectById(Long id) {
+    public Classification findById(Long id) {
         Optional<Classification> optionalClassification = classificationRepository.findById(id);
         return optionalClassification.get();
     }

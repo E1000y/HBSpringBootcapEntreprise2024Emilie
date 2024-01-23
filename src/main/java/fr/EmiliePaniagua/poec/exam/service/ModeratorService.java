@@ -19,7 +19,7 @@ public class ModeratorService implements DAOServiceInterface<Moderator>{
     }
 
     @Override
-    public Moderator getObjectById(Long id) {
+    public Moderator findById(Long id) {
         Optional<Moderator> moderatorOptional = moderatorRepository.findById(id);
         return moderatorOptional.get();
     }

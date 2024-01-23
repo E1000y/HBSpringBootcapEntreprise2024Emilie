@@ -16,11 +16,11 @@ public class GenreService implements DAOServiceInterface {
 
     @Override
     public List<Genre> findAll() {
-        return genreRepository.findAll()
+        return genreRepository.findAll();
     }
 
     @Override
-    public Genre getObjectById(Long id) {
+    public Genre findById(Long id) {
 
         Optional<Genre> optionalGenre = genreRepository.findById(id);
 

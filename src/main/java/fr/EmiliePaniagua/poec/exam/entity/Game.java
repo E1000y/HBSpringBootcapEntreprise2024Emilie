@@ -23,6 +23,8 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
     private LocalDate publishedAt;
 
@@ -46,8 +48,10 @@ public class Game {
     @ManyToMany
     private List<Platform> platforms = new ArrayList<>();
 
+    @ManyToOne
+    private Moderator moderator;
 
-
-
-
+    public void addPlatform(Platform platform) {
+        platforms.add(platform);
+    }
 }

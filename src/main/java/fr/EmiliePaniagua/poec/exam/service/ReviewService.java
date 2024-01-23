@@ -19,7 +19,7 @@ public class ReviewService implements DAOServiceInterface<Review> {
     }
 
     @Override
-    public Review getObjectById(Long id) {
+    public Review findById(Long id) {
         Optional<Review> reviewOptional = reviewRepository.findById(id);
         return reviewOptional.get();
     }

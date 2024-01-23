@@ -19,7 +19,7 @@ public class GameService implements DAOServiceInterface<Game> {
     }
 
     @Override
-    public Game getObjectById(Long id) {
+    public Game findById(Long id) {
         Optional<Game> gameOptional = gameRepository.findById(id);
         return gameOptional.get();
 

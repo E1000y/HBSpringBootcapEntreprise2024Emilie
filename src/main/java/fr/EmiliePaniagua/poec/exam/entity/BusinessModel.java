@@ -1,5 +1,6 @@
 package fr.EmiliePaniagua.poec.exam.entity;
 
+import fr.EmiliePaniagua.poec.exam.entity.interfaces.NomenclatureInterface;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.List;
 @Setter
 @Entity
 
-public class BusinessModel {
+public class BusinessModel implements NomenclatureInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

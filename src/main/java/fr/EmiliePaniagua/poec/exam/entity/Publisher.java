@@ -1,5 +1,6 @@
 package fr.EmiliePaniagua.poec.exam.entity;
 
+import fr.EmiliePaniagua.poec.exam.entity.interfaces.NomenclatureInterface;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Publisher {
+public class Publisher implements NomenclatureInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

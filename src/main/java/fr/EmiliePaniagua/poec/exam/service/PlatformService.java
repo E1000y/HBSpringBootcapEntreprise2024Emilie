@@ -19,7 +19,7 @@ public class PlatformService implements DAOServiceInterface<Platform> {
     }
 
     @Override
-    public Platform getObjectById(Long id) {
+    public Platform findById(Long id) {
         Optional<Platform> platformOptional = platformRepository.findById(id);
         return platformOptional.get();
     }

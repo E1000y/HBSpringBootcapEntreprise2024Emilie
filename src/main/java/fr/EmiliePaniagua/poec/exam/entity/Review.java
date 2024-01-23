@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,23 +19,20 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     private LocalDateTime createdAt;
 
-    private float note;
+    private float rating;
 
-    private LocalDateTime ModerationDate;
+    private LocalDateTime moderatedAt;
 
     @ManyToOne
     private Gamer gamer;
 
     @ManyToOne
     private Moderator moderator;
-
-    public Date getCreatedAt() {
-        return Date.from(createdAt.atZone(ZoneId.systemDefault()).toInstant());
-    }
 
     @ManyToOne(optional = false)
     private Game game;

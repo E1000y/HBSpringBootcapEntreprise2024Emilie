@@ -19,7 +19,7 @@ public class BusinessModelService implements DAOServiceInterface<BusinessModel>{
     }
 
     @Override
-    public BusinessModel getObjectById(Long id) {
+    public BusinessModel findById(Long id) {
         Optional<BusinessModel> optionalbm =  businessModelRepository.findById(id);
 
         return optionalbm.get();
