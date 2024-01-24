@@ -14,7 +14,7 @@ public class HelloWorldController {
     private UserService userService;
     private GenreService genreService;
 
-    @GetMapping("/")
+    @GetMapping("/HelloWorld")
     public ModelAndView helloWorld(ModelAndView mav){
         mav.setViewName("HelloWorld");
      mav.addObject("users", userService.findAll());

@@ -27,14 +27,18 @@ public class UserService implements DAOServiceInterface<User>, UserDetailsServic
 
     @Override
     public User findById(Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        return userOptional.get();
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    public User findByNickname(String nickname) {
+       return userRepository.findByNickname(nickname)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByNickname(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = findByNickname(username);
 
         return new org.springframework.security.core.userdetails.User(
                 user.getNickname(),

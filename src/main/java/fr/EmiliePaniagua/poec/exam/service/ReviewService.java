@@ -3,10 +3,10 @@ package fr.EmiliePaniagua.poec.exam.service;
 import fr.EmiliePaniagua.poec.exam.entity.Review;
 import fr.EmiliePaniagua.poec.exam.repository.ReviewRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -20,7 +20,15 @@ public class ReviewService implements DAOServiceInterface<Review> {
 
     @Override
     public Review findById(Long id) {
-        Optional<Review> reviewOptional = reviewRepository.findById(id);
-        return reviewOptional.get();
+        return reviewRepository.findById(id)
+                .orElseThrow(()-> new NotFoundException("Review not found"));
+
+    }
+
+    public List<Review> findTop5ByCreatedAtDesc(){
+        return reviewRepository.findTop5ByOrderByCreatedAtDesc();
+
+
+
     }
 }
