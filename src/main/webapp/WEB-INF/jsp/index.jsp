@@ -29,12 +29,15 @@
     <h1>Les derniers jeux</h1>
     <div class="row">
         <c:forEach items = "${games}" var = "game">
-            <div class="card bg-black col-md-4 px-1  ">
+            <div class="card bg-black col-md-3 m-1  ">
 <%--                <a href="#" class="">--%>
 <%--                    <img src = "${game.image}">--%>
 <%--                </a>--%>
 <%--                ${game.name}--%>
-               <div class="col text-center"><img src = "${game.image}" class ="rounded img-cropped">
+               <div class="col text-center">
+<%--                   <a href="${s:mvcUrl('AppGame#show').arg(0, game.name).build()}">--%>
+                    <img src = "${game.image}" class ="rounded img-cropped">
+<%--                   </a>--%>
                      <br>  ${game.name}</div>
             </div>
         </c:forEach>
