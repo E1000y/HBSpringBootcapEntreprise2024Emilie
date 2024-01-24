@@ -24,4 +24,8 @@ public class GameService implements DAOServiceInterface<Game> {
         return gameOptional.get();
 
     }
+
+    public List<Game> findTop9ByPublishedAtDesc(){
+        return gameRepository.findTop9ByOrderByPublishedAtDesc();
+    }
 }

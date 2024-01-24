@@ -26,16 +26,34 @@
 
 
 <div class="container">
+    <h1>Les derniers jeux</h1>
+    <div class="row">
+        <c:forEach items = "${games}" var = "game">
+            <div class="card bg-black col-md-4 px-1  ">
+<%--                <a href="#" class="">--%>
+<%--                    <img src = "${game.image}">--%>
+<%--                </a>--%>
+<%--                ${game.name}--%>
+               <div class="col text-center"><img src = "${game.image}" class ="rounded img-cropped">
+                     <br>  ${game.name}</div>
+            </div>
+        </c:forEach>
+    </div>
+</div>
+
+
+
+
+<div class="container">
     <h1>les derniers commentaires</h1>
     <div class = "row">
 
             <c:forEach items = "${reviews}" var = "review">
-                <div class = "card bg-black m-5 col-xl">
-                    <ul>
-                        <li>${review.id}</li>
-                        <li>${review.description}</li>
-                        <li>${review.rating}/20</li>
-                    </ul>
+                <div class = "card bg-black m-3 col-lg-3 col-md-6 col-sm-12">
+                        ${review.id}
+                        ${review.description}
+                        ${review.rating}/20
+
                 </div>
             </c:forEach>
 
