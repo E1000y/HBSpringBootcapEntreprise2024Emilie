@@ -1,5 +1,6 @@
 package fr.EmiliePaniagua.poec.exam.service;
 
+import fr.EmiliePaniagua.poec.exam.DTO.ReviewDTO;
 import fr.EmiliePaniagua.poec.exam.entity.Review;
 import fr.EmiliePaniagua.poec.exam.repository.ReviewRepository;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,8 @@ import java.util.List;
 public class ReviewService implements DAOServiceInterface<Review> {
 
     private ReviewRepository reviewRepository;
+    private GameService gameService;
+    private GamerService gamerService;
     @Override
     public List<Review> findAll() {
         return reviewRepository.findAll();
@@ -27,8 +30,15 @@ public class ReviewService implements DAOServiceInterface<Review> {
 
     public List<Review> findTop5ByCreatedAtDesc(){
         return reviewRepository.findTop5ByOrderByCreatedAtDesc();
+    }
 
-
+    public Review persist(ReviewDTO reviewDTO){
+        Review review = new Review();
+        review.setGame(gameService.findById(reviewDTO.getGameId()));
+        review.setDescription(reviewDTO.getDescription());
+        review.setGamer(gamerService.findById(reviewDTO.getUserId()));
+        review.setRating(reviewDTO.getRating());
+        return reviewRepository.saveAndFlush(review);
 
     }
 }
