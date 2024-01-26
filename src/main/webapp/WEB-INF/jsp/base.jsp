@@ -45,6 +45,24 @@
 <%--                    </div>--%>
                 </div>
                 <div class="col-4">
+                    <security:authorize access="!isAuthenticated()">
+                        <div class="d-flex justify-content-end">
+                            <a class="nav-link" href="${UrlRoute.URL_LOGIN}">Login</a>
+                        </div>
+                    </security:authorize>
+                    <security:authorize access="isAuthenticated()">
+                        <div class="d-flex justify-content-end">
+                            <span class="ms-2">
+                                Bienvenue <security:authentication property="name"/>
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <form method="POST" action="${UrlRoute.URL_LOGOUT}" autocomplete="off">
+                                <button type="submit" tabindex="3" class="btn btn-link">Logout</button>
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                            </form>
+                        </div>
+                    </security:authorize>
                 </div>
             </div>
         </nav>

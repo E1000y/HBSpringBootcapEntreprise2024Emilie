@@ -10,7 +10,8 @@ import java.util.List;
 @Repository
 public interface GameRepository extends JpaRepository<Game, Long> {
 
-    public List<Game> findTop9ByOrderByPublishedAtDesc();
+    List<Game> findTop9ByOrderByPublishedAtDesc();
 
+    List<Game> findTop6ByOrderByPublishedAtDesc();
 }
 

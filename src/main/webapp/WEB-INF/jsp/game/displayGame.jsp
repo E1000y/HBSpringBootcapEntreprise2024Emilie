@@ -28,7 +28,7 @@
 <%--    ${s:mvcUrl('AppReview#create').arg(0, game.slug).build()}--%>
 
     <security:authorize access="isAuthenticated()">
-        <f:form modelAttribute="reviewDto" method="post" action="" cssClass="p-5 col-lg-6 col-md-8 col-sm-12 mx-auto">
+        <f:form modelAttribute="reviewDto" method="post" action="${currentPath}" cssClass="p-5 col-lg-6 col-md-8 col-sm-12 mx-auto">
             <div class="mb-3 row">
                 <f:label path="description" class="col-sm-2 col-form-label">description</f:label>
                 <div class="col-sm-10">
@@ -40,7 +40,7 @@
             <div class="mb-3 row">
                 <f:label path="rating" class="col-sm-2 col-form-label">Rating</f:label>
                 <div class="col-sm-10">
-                    <f:input type="number" min="0" max="5" step="0.5" cssClass="form-control" path="rating"/>
+                    <f:input type="number" min="0" max="20" step="0.5" cssClass="form-control" path="rating"/>
                     <f:errors path="rating" cssClass="invalid-feedback"/>
                 </div>
             </div>

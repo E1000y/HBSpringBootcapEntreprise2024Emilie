@@ -29,13 +29,15 @@
     <h1>Les derniers jeux</h1>
     <div class="row">
         <c:forEach items = "${games}" var = "game">
-            <div class="card bg-black col-md-3 m-1">
-
-               <div class="col text-center">
-                   <a href="${UrlRoute.URL_GAME}/${game.id}">
-                    <img src = "${game.image}" class ="rounded img-cropped">
-                   </a>
-                     <br>  ${game.name}</div>
+            <div class="col-md-4 col-12-sm p-1">
+                <div class="card bg-black">
+                    <div class="col text-center h-100">
+                        <a href="${UrlRoute.URL_GAME}/${game.id}">
+                        <img src = "${game.image}" class ="image-game rounded img-cropped">
+                        </a>
+                        <br>  ${game.name}
+                    </div>
+                </div>
             </div>
         </c:forEach>
     </div>

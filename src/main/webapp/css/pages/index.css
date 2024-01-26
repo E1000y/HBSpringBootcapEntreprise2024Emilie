@@ -1,0 +1,9 @@
+
+.card {
+    height: 23em;
+}
+
+.card .image-game {
+    height: 85%;
+    object-fit: contain;
+}

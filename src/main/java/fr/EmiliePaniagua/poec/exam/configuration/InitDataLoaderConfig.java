@@ -70,25 +70,27 @@ public class InitDataLoaderConfig implements CommandLineRunner {
         Faker faker = new Faker(Locale.of("fr"));
         List<String> names = new ArrayList<>();
         for (long i = 1L; i <= 200; i++) {
-            User user;
-            if (i <= 5) {
-                user = new Moderator();
-                ((Moderator) user).setPhoneNumber(faker.phoneNumber().cellPhone());
-            } else {
-                user = new Gamer();
-                LocalDate localDate = new java.sql.Date(faker.date().birthday(12, 60).getTime()).toLocalDate();
-                ((Gamer) user).setBirthAt(localDate);
+            if (userRepository.findById(i).isEmpty()) {
+                User user;
+                if (i <= 5) {
+                    user = new Moderator();
+                    ((Moderator) user).setPhoneNumber(faker.phoneNumber().cellPhone());
+                } else {
+                    user = new Gamer();
+                    LocalDate localDate = new java.sql.Date(faker.date().birthday(12, 60).getTime()).toLocalDate();
+                    ((Gamer) user).setBirthAt(localDate);
+                }
+                user.setId(i);
+                String name;
+                do {
+                    name = slugger.slugify(faker.funnyName().name().replace(" ", ""));
+                } while (names.contains(name));
+                names.add(name);
+                user.setNickname(name);
+                user.setEmail(faker.internet().safeEmailAddress());
+                user.setPassword(passwordEncoder.encode("12345"));
+                userRepository.save(user);
             }
-            user.setId(i);
-            String name;
-            do {
-                name = slugger.slugify(faker.funnyName().name().replace(" ", ""));
-            } while (names.contains(name));
-            names.add(name);
-            user.setNickname(name);
-            user.setEmail(faker.internet().safeEmailAddress());
-            user.setPassword(passwordEncoder.encode("12345"));
-            userRepository.save(user);
         }
     }
 
@@ -135,9 +137,9 @@ public class InitDataLoaderConfig implements CommandLineRunner {
                 LocalDate localDate = new java.sql.Date(faker.date().birthday(2, 25).getTime()).toLocalDate();
                 game.setPublishedAt(localDate);
                 Random rand = new Random();
-                game.setModerator((Moderator) userService.findById(rand.nextLong(5 - 1) + 1));
+                game.setModerator((Moderator) userService.findById(rand.nextLong(6 - 1) + 1));
                 game.setBusinessModel(businessModelService.findById(businessModels.get(i)));
-                game.setClassification(classificationService.findById(rand.nextLong(3 - 1) + 1));
+                game.setClassification(classificationService.findById(rand.nextLong(4 - 1) + 1));
                 game.setPublisher(publisherService.findById(publishers.get(i)));
                 game.setGenre(genreService.findById(genres.get(i)));
                 game.addPlatform(platformService.findById(platforms.get(i)));
@@ -149,20 +151,28 @@ public class InitDataLoaderConfig implements CommandLineRunner {
     private void createReview() {
         Faker faker = new Faker(Locale.of("fr"));
         for (long i = 1; i <= 500; i++) {
-            Review review = new Review();
-            review.setId(i);
-            Random rand = new Random();
-            LocalDateTime localDate = new java.sql.Date(faker.date().birthday(0, 2).getTime()).toLocalDate().atTime(0, 0);
-            review.setCreatedAt(localDate);
-            review.setRating((float) rand.nextLong(20));
-            review.setGamer((Gamer) userService.findById(rand.nextLong(200 - 6) + 6));
-            review.setGame(gameService.findById(rand.nextLong(21 - 1) + 1));
-            review.setDescription(faker.chuckNorris().fact() + "</br>" + faker.lorem().paragraph(3));
-            if (i%5 != 0) {
-                review.setModerator((Moderator) userService.findById(rand.nextLong(5 - 1) + 1));
-                review.setModeratedAt(LocalDateTime.now());
+            if (reviewRepository.findById(i).isEmpty()) {
+                Review review = new Review();
+                review.setId(i);
+                Random rand = new Random();
+                LocalDateTime localDate = new java.sql.Date(faker.date().birthday(0, 2).getTime()).toLocalDate().atTime(0, 0);
+                review.setCreatedAt(localDate);
+                review.setGamer((Gamer) userService.findById(rand.nextLong(201 - 6) + 6));
+                review.setGame(gameService.findById(rand.nextLong(22 - 1) + 1));
+                float rating = (float) rand.nextLong(21 - 2) + 2;
+                if (review.getGame().getId().equals(9L)) {
+                    rating = (float) rand.nextLong(3);
+                } else if (review.getGame().getId().equals(6L) || review.getGame().getId().equals(1L)) {
+                    rating = (float) rand.nextLong(21 - 10) + 10;
+                }
+                review.setRating(rating);
+                review.setDescription("<strong>" + faker.chuckNorris().fact() + "</strong></br></br>" + faker.lorem().paragraph(3));
+                if (i%5 != 0) {
+                    review.setModerator((Moderator) userService.findById(rand.nextLong(6 - 1) + 1));
+                    review.setModeratedAt(LocalDateTime.now());
+                }
+                reviewRepository.save(review);
             }
-            reviewRepository.save(review);
         }
     }
 

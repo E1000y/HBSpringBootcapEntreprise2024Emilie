@@ -23,4 +23,8 @@ public class GamerService implements DAOServiceInterface<Gamer> {
         Optional<Gamer> gamerOptional = gamerRepository.findById(id);
         return gamerOptional.get();
     }
+
+    public Gamer persist(Gamer gamer){
+        return gamerRepository.saveAndFlush(gamer);
+    }
 }
