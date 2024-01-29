@@ -12,6 +12,8 @@
 <%@ page import="org.springframework.web.context.WebApplicationContext" %>
 <%@ page import="fr.EmiliePaniagua.poec.exam.service.UserService" %>
 <%@ page import="fr.EmiliePaniagua.poec.exam.entity.User" %>
+<%@ page import="fr.EmiliePaniagua.poec.exam.utils.DateUtils" %>
+<%@ page import="fr.EmiliePaniagua.poec.exam.utils.JspUtils" %>
 
 <%-- Renomme de manière plus simple le "pageContext.request.contextPath" --%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
@@ -29,6 +31,8 @@
     request.setAttribute("currentUrl", url + path);
     WebApplicationContext ctx = RequestContextUtils.findWebApplicationContext(request);
     if (ctx != null) {
+        request.setAttribute("dateUtils", ctx.getBean(DateUtils.class));
+        request.setAttribute("jspUtils", ctx.getBean(JspUtils.class));
         UserService userService = ctx.getBean(UserService.class);
         if (request.getUserPrincipal() != null) {
             User user = userService.findByNickname(request.getUserPrincipal().getName());

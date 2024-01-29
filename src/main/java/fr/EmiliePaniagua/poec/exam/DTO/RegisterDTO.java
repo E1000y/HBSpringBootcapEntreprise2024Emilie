@@ -1,6 +1,8 @@
 package fr.EmiliePaniagua.poec.exam.DTO;
 
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,24 +15,19 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-
 public class RegisterDTO {
 
-    @Column(nullable= false)
+    @Email
+    @NotBlank
     private String email;
 
-    @Column(nullable=false)
+    @NotBlank
     private String nickname;
 
-    @Column(nullable=false)
+    @NotBlank
     private String password;
 
-    @Column(nullable=false)
-    private String checkPassword;
-
-    @Column(nullable= false)
-    private LocalDate birthAt;
-
-
+    @NotBlank
+    private String birthAt;
 
 }

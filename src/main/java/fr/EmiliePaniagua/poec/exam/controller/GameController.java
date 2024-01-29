@@ -10,6 +10,9 @@ import fr.EmiliePaniagua.poec.exam.service.ReviewService;
 import fr.EmiliePaniagua.poec.exam.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +31,28 @@ public class GameController {
 
     private final ReviewService reviewService;
 
+    @GetMapping(path="/")
+    public ModelAndView displayPagedGames(
+            ModelAndView mav,
+            Principal principal,
+            @PageableDefault(
+                    size = 8,
+                    sort = {"name"},
+                    direction = Sort.Direction.ASC
+            )Pageable pageable
+    ){
+        if(principal == null){
+            mav.setViewName("redirect:/login");
+            return mav;
+        }
+
+        mav.addObject("pagedGames", gameService.findAll(pageable));
+        mav.setViewName("game/pagedGames");
+        return mav;
+    }
+
+
+
     @GetMapping(path="/{id}", name ="displayGame")
     public ModelAndView displayGame(
             @PathVariable Long id,
@@ -40,7 +65,7 @@ public class GameController {
             ReviewDTO dto = new ReviewDTO();
             dto.setGameId(game.getId());
             User user = userService.findByNickname(principal.getName());
-            dto.setUserId(user.getId()); //pourquoi 1L?
+            dto.setUserId(user.getId());
             mav.addObject("reviewDto", dto);
         }
 

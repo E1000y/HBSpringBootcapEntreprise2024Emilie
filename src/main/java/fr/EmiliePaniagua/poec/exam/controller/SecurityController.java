@@ -44,33 +44,25 @@ public class SecurityController {
 @GetMapping(UrlRoute.URL_REGISTER)
     public ModelAndView register(ModelAndView mav){
         mav.setViewName("security/register");
+        mav.addObject("registerDTO", new RegisterDTO());
         return mav;
 }
 
     //post pour soumettre le formulaire
-    @PostMapping(path="/register")
+    @PostMapping(UrlRoute.URL_REGISTER)
     public ModelAndView register(
-            @ModelAttribute("registerDTO") @Valid RegisterDTO registerDTO, String error,
-            ModelAndView mav )
-    {
-        mav.setViewName("security/register");
-        mav.addObject("registerDTO", registerDTO);
-
-        if(registerDTO.getPassword().equals(registerDTO.getCheckPassword())){
-            Gamer gamer = new Gamer();
-            gamer.setNickname(registerDTO.getNickname());
-            gamer.setEmail(registerDTO.getEmail());
-            gamer.setPassword(registerDTO.getPassword());
-            gamer.setBirthAt(registerDTO.getBirthAt());
-
-            gamerService.persist(gamer);
-
-        }
-        else{
-            mav.addObject("error", "Les mots de passe sont différents");
-
+            @ModelAttribute("registerDTO") @Valid RegisterDTO registerDTO,
+            BindingResult result,
+            ModelAndView mav
+    ) {
+        if (result.hasErrors()) {
+            mav.setViewName("security/register");
+            mav.addObject("registerDTO", registerDTO);
+            return mav;
         }
 
+        gamerService.persist(registerDTO);
+        mav.setViewName("redirect:/login");
         return mav;
     }
 

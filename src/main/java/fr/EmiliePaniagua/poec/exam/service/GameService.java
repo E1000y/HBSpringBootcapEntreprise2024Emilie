@@ -3,6 +3,8 @@ package fr.EmiliePaniagua.poec.exam.service;
 import fr.EmiliePaniagua.poec.exam.entity.Game;
 import fr.EmiliePaniagua.poec.exam.repository.GameRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +27,13 @@ public class GameService implements DAOServiceInterface<Game> {
 
     }
 
+
     public List<Game> findTop6ByPublishedAtDesc() {
         return gameRepository.findTop6ByOrderByPublishedAtDesc();
+    }
+
+
+    public Page<Game> findAll(Pageable pageable) {
+        return gameRepository.findAll(pageable);
     }
 }

@@ -4,6 +4,8 @@ import fr.EmiliePaniagua.poec.exam.DTO.ReviewDTO;
 import fr.EmiliePaniagua.poec.exam.entity.Review;
 import fr.EmiliePaniagua.poec.exam.repository.ReviewRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,9 @@ public class ReviewService implements DAOServiceInterface<Review> {
         return reviewRepository.findById(id)
                 .orElseThrow(()-> new NotFoundException("Review not found"));
 
+    }
+    public Page<Review> findAll(Pageable pageable) {
+        return reviewRepository.findAll(pageable);
     }
 
     public List<Review> findTop5ByCreatedAtDesc(){

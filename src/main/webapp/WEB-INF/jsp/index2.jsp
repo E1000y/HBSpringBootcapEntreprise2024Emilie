@@ -26,18 +26,20 @@
 
 
 <div class="container">
-    <h1>Les derniers jeux</h1>
+    <div class="d-flex justify-content-around">
+       <div>
+       </div>
+        <h1>
+            Les derniers jeux
+        </h1>
+        <security:authorize access="isAuthenticated()">
+            <a href="${UrlRoute.URL_GAME}/" class="btn btn-link">Voir tous les jeux</a>
+        </security:authorize>
+    </div>
     <div class="row">
         <c:forEach items = "${games}" var = "game">
             <div class="col-md-4 col-12-sm p-1">
-                <div class="card bg-black">
-                    <div class="col text-center h-100">
-                        <a href="${UrlRoute.URL_GAME}/${game.id}">
-                        <img src = "${game.image}" class ="image-game rounded img-cropped">
-                        </a>
-                        <br>  ${game.name}
-                    </div>
-                </div>
+                <%@ include file="game/game-card.jsp"%>
             </div>
         </c:forEach>
     </div>
@@ -48,6 +50,9 @@
 
 <div class="container">
     <h1>les derniers commentaires</h1>
+    <security:authorize access="isAuthenticated()">
+        <a href="${UrlRoute.URL_REVIEW}/" class="btn btn-link">Voir tous les commentaires</a>
+    </security:authorize>
     <div class = "row">
 
             <c:forEach items = "${reviews}" var = "review">
