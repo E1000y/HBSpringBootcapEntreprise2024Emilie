@@ -14,4 +14,7 @@ public class UrlRoute {
 
     public final static String URL_REGISTER = "/register";
 
+    public static final String URL_REVIEW_MODERATE = "/review/moderate";
+
+    public static final String URL_USER ="/user";
 }

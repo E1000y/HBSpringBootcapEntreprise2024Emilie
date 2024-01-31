@@ -1,7 +1,7 @@
 package fr.EmiliePaniagua.poec.exam.service;
 
 import fr.EmiliePaniagua.poec.exam.DTO.ReviewDTO;
-import fr.EmiliePaniagua.poec.exam.entity.Review;
+import fr.EmiliePaniagua.poec.exam.entity.*;
 import fr.EmiliePaniagua.poec.exam.repository.ReviewRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -18,6 +19,7 @@ public class ReviewService implements DAOServiceInterface<Review> {
     private ReviewRepository reviewRepository;
     private GameService gameService;
     private GamerService gamerService;
+    private UserService userService;
     @Override
     public List<Review> findAll() {
         return reviewRepository.findAll();
@@ -33,6 +35,8 @@ public class ReviewService implements DAOServiceInterface<Review> {
         return reviewRepository.findAll(pageable);
     }
 
+    public Page<Review> findAllByGameId(Long id,Pageable pageable){return reviewRepository.findAllByGameId(id, pageable);}
+
     public List<Review> findTop5ByCreatedAtDesc(){
         return reviewRepository.findTop5ByOrderByCreatedAtDesc();
     }
@@ -46,4 +50,17 @@ public class ReviewService implements DAOServiceInterface<Review> {
         return reviewRepository.saveAndFlush(review);
 
     }
-}
+
+    public void moderateReview(String nickname, Long id, Long status) {
+        Review review = findById(id);
+        boolean isModerate = true;
+        if (status == 1L) {
+            review.setModerator((Moderator) userService.findByNickname(nickname));
+            review.setModeratedAt(LocalDateTime.now());
+        } else {
+            reviewRepository.delete(review);
+            isModerate = false;
+        }
+        reviewRepository.flush();
+
+}}

@@ -57,7 +57,12 @@ public class GameController {
     public ModelAndView displayGame(
             @PathVariable Long id,
             ModelAndView mav,
-            Principal principal
+            Principal principal,
+            @PageableDefault(
+                    size = 6,
+                    sort = {"createdAt"},
+                    direction = Sort.Direction.DESC
+            ) Pageable pageable
     ) {
         Game game = gameService.findById(id);
 
@@ -70,6 +75,7 @@ public class GameController {
         }
 
         mav.setViewName("game/displayGame");
+        mav.addObject("pagedReviews", reviewService.findAllByGameId(id,pageable));
         mav.addObject("game", game);
         return mav;
 
@@ -92,5 +98,25 @@ public class GameController {
         mav.setViewName("redirect:/game/"+id);
         return mav;
     }
+
+//    @GetMapping(path="/{id}")
+//    public ModelAndView displayPagedReviews(
+//            ModelAndView mav,
+//            Principal principal,
+//            @PageableDefault(
+//                    size = 6,
+//                    sort = {"createdAt"},
+//                    direction = Sort.Direction.DESC
+//            ) Pageable pageable)
+//    {
+//        if(principal == null){
+//            mav.setViewName("redirect:/login");
+//            return mav;
+//        }
+//
+//        mav.addObject("pagedReviews", reviewService.findAllByGameId(id,pageable));
+//        mav.setViewName("game/displayGame");
+//        return mav;
+//    }
 
 }

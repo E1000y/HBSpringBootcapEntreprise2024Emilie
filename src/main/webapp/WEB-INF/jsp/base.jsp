@@ -23,10 +23,10 @@
                     <a class="navbar-brand ms-3" href="${contextPath}/">
                         <i class="fa-brands fa-steam fa-3x"></i>
                     </a>
-                    <security:authorize access="isAuthenticated()">
-                        <a href="#" class="btn btn-link">Liste des jeux</a>
-                        <a href="#" class="btn btn-link">Commentaires</a>
-                    </security:authorize>
+<%--                    <security:authorize access="isAuthenticated()">--%>
+<%--                        <a href="#" class="btn btn-link">Liste des jeux</a>--%>
+<%--                        <a href="#" class="btn btn-link">Commentaires</a>--%>
+<%--                    </security:authorize>--%>
                 </div>
                 <div class="col-2">
                 </div>

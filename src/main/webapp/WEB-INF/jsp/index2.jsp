@@ -49,19 +49,34 @@
 
 
 <div class="container">
-    <h1>les derniers commentaires</h1>
-    <security:authorize access="isAuthenticated()">
-        <a href="${UrlRoute.URL_REVIEW}/" class="btn btn-link">Voir tous les commentaires</a>
-    </security:authorize>
-    <div class = "row">
+    <div class="d-flex">
+        <div>
+            <h1>les derniers commentaires</h1>
+        </div>
+        <security:authorize access="isAuthenticated()">
+            <div class="px-5">
+                <a href="${UrlRoute.URL_REVIEW}/" class="btn btn-link">Voir tous les commentaires</a>
+            </div>
+        </security:authorize>
+    </div>
 
+<%--    <%@include file="review/pagedReviews.jsp"%>--%>
+
+    <div class = "container row">
             <c:forEach items = "${reviews}" var = "review">
-                <div class = "card bg-black m-3 col-lg-3 col-md-6 col-sm-12">
-                        ${review.id}
-                        ${review.description}
-                        ${review.rating}/20
 
-                </div>
+
+<%--                    <div class = "row m-3 col-md-3 ">--%>
+                        <div class="col-lg-4 col-md-6 col-sm-12 mt-4">
+                <%@include file="review/review-card.jsp"%>
+<%--                <div class = "card bg-black m-3 col-lg-3 col-md-6 col-sm-12">--%>
+<%--                        ${review.id}--%>
+<%--                        ${review.description}--%>
+<%--                        ${jspUtils.getStringRating(review.rating)}/20--%>
+<%--                    </div>--%>
+                    </div>
+
+
             </c:forEach>
 
     </div>
