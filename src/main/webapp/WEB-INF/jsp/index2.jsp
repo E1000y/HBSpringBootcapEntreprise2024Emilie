@@ -79,6 +79,14 @@
 
             </c:forEach>
 
+        <security:authorize access="hasRole('MODERATOR')">
+            <div>
+                <a href="${UrlRoute.URL_EXPORT}" class="btn btn-link">
+                    <i class="fa-solid fa-file-excel me-1 text-success"></i>
+                    Télécharger export Excel
+                </a>
+            </div>
+        </security:authorize>
     </div>
 
 </div>

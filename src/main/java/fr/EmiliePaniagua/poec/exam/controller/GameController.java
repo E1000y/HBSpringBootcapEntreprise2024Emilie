@@ -88,6 +88,7 @@ public class GameController {
             BindingResult result,//c'est quoi? rep dono : contient les erreurs du formulaire
             ModelAndView mav
     ){
+        System.out.println("error");
         if(result.hasErrors()){
             mav.setViewName("game/displayGame");
             mav.addObject("game", gameService.findById(id));

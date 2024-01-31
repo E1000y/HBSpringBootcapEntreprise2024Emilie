@@ -17,4 +17,6 @@ public class UrlRoute {
     public static final String URL_REVIEW_MODERATE = "/review/moderate";
 
     public static final String URL_USER ="/user";
+
+    public static final String URL_EXPORT = "/export";
 }

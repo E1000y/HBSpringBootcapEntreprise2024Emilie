@@ -2,7 +2,10 @@ package fr.EmiliePaniagua.poec.exam.controller;
 
 import fr.EmiliePaniagua.poec.exam.routes.UrlRoute;
 import fr.EmiliePaniagua.poec.exam.service.ReviewService;
+import fr.EmiliePaniagua.poec.exam.service.utils.ExcelReviewService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.Principal;
 
 @Controller
@@ -21,6 +29,7 @@ import java.security.Principal;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final ExcelReviewService excelService;
 
     @GetMapping(path=UrlRoute.URL_REVIEW+"/")
     public ModelAndView displayPagedReviews(
@@ -53,6 +62,22 @@ public class ReviewController {
         reviewService.moderateReview(principal.getName(), id, moderate);
         mav.setViewName("redirect:"+UrlRoute.URL_REVIEW+"/");
         return mav;
+    }
+
+    @GetMapping(UrlRoute.URL_EXPORT)
+    public void downloadExcel(HttpServletResponse response) {
+        try {
+            File file = excelService.writeExcel();
+            ByteArrayInputStream excelToByte = new ByteArrayInputStream(
+                    Files.readAllBytes(Paths.get(file.getAbsolutePath()))
+            );
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
+            IOUtils.copy(excelToByte, response.getOutputStream());
+            response.flushBuffer();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 
