@@ -23,4 +23,9 @@ public class PlatformService implements DAOServiceInterface<Platform> {
         Optional<Platform> platformOptional = platformRepository.findById(id);
         return platformOptional.get();
     }
+
+    @Override
+    public Object findAllSorted() {
+        return platformRepository.findAllByOrderByNameAsc();
+    }
 }

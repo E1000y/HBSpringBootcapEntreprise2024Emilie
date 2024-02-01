@@ -32,13 +32,16 @@
             <div class="row">
 
                 <div class="d-flex mt-3     ">
-                            <h2>Rédigez un commentaire sur le jeu</h2>
-                            <button class="ms-2 btn btn-link"
-                                    title="Ajouter un commentaire"
-                                    data-hide-show-button="formReview"
-                            >
-                                <i class="fa fa-pen fa-2x"></i>
-                            </button>
+
+                    <security:authorize access="!hasRole('MODERATOR')">
+                        <h2>Rédigez un commentaire sur le jeu</h2>
+                        <button class="ms-2 btn btn-link"
+                                title="Ajouter un commentaire"
+                                data-hide-show-button="formReview"
+                        >
+                            <i class="fa fa-pen fa-2x"></i>
+                        </button>
+                    </security:authorize>
                         </div>
                     <security:authorize access="isAuthenticated()">
                         <div class="my-3 d-none"
@@ -60,10 +63,12 @@
                                             <f:errors path="rating" cssClass="invalid-feedback"/>
                                         </div>
                                     </div>
+
                                     <f:input type="number" path="userId" hidden="hidden"/>
                                     <f:input type="number" path="gameId" hidden="hidden"/>
                                     <div class="col-6">
                                         <f:button class="btn btn-secondary" type="reset">Reset</f:button>
+
                                         <f:button class="btn btn-primary">Submit</f:button>
                                     </div>
                                 </div>

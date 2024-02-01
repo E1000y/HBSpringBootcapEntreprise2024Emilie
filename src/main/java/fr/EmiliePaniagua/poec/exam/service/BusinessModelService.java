@@ -25,4 +25,9 @@ public class BusinessModelService implements DAOServiceInterface<BusinessModel>{
         return optionalbm.get();
     }
 
+    @Override
+    public Object findAllSorted() {
+        return businessModelRepository.findAllByOrderByNameAsc();
+    }
+
 }

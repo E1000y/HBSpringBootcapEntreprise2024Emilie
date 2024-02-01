@@ -26,4 +26,9 @@ public class GenreService implements DAOServiceInterface {
 
         return optionalGenre.get();
     }
+
+    @Override
+    public Object findAllSorted() {
+        return genreRepository.findAllByOrderByNameAsc();
+    }
 }

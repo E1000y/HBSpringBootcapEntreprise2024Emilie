@@ -23,4 +23,9 @@ public class ModeratorService implements DAOServiceInterface<Moderator>{
         Optional<Moderator> moderatorOptional = moderatorRepository.findById(id);
         return moderatorOptional.get();
     }
+
+    @Override
+    public List<Moderator> findAllSorted() {
+        return moderatorRepository.findAll();
+    }
 }

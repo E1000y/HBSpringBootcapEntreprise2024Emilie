@@ -31,6 +31,11 @@ public class GamerService implements DAOServiceInterface<Gamer> {
         return gamerOptional.get();
     }
 
+    @Override
+    public Object findAllSorted() {
+        return gamerRepository.findAll();
+    }
+
     public Gamer persist(RegisterDTO registerDTO) {
         Gamer gamer = new Gamer();
         gamer.setNickname(registerDTO.getNickname());

@@ -35,6 +35,11 @@
         <security:authorize access="isAuthenticated()">
             <a href="${UrlRoute.URL_GAME}/" class="btn btn-link">Voir tous les jeux</a>
         </security:authorize>
+        <security:authorize access="hasRole('MODERATOR')">
+            <a href="${UrlRoute.URL_GAME_NEW}" class="ms-2">
+                <i class="fa fa-circle-plus link-green fs-2 text-success"></i>
+            </a>
+        </security:authorize>
     </div>
     <div class="row">
         <c:forEach items = "${games}" var = "game">

@@ -1,13 +1,12 @@
 package fr.EmiliePaniagua.poec.exam.controller;
 
 
+import fr.EmiliePaniagua.poec.exam.DTO.GameDTO;
 import fr.EmiliePaniagua.poec.exam.DTO.ReviewDTO;
 import fr.EmiliePaniagua.poec.exam.entity.Game;
 import fr.EmiliePaniagua.poec.exam.entity.User;
 import fr.EmiliePaniagua.poec.exam.routes.UrlRoute;
-import fr.EmiliePaniagua.poec.exam.service.GameService;
-import fr.EmiliePaniagua.poec.exam.service.ReviewService;
-import fr.EmiliePaniagua.poec.exam.service.UserService;
+import fr.EmiliePaniagua.poec.exam.service.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -19,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping(UrlRoute.URL_GAME)
@@ -30,6 +31,13 @@ public class GameController {
     private final UserService userService;
 
     private final ReviewService reviewService;
+    private final GenreService genreService;
+    private final ClassificationService classificationService;
+    private final BusinessModelService businessModelService;
+    private final PublisherService publisherService;
+    private final PlatformService platformService;
+
+
 
     @GetMapping(path="/")
     public ModelAndView displayPagedGames(
@@ -97,6 +105,42 @@ public class GameController {
         reviewService.persist(reviewDto);
 
         mav.setViewName("redirect:/game/"+id);
+        return mav;
+    }
+    @GetMapping(path="/new")
+
+    public ModelAndView createGame(
+            ModelAndView mav
+    ){
+        mav.addObject("gameDto", new GameDTO());
+        mav.addObject("genres", genreService.findAllSorted());
+        mav.addObject("classifications", classificationService.findAllSorted());
+        mav.addObject("businessModels", businessModelService.findAllSorted());
+        mav.addObject("publishers", publisherService.findAllSorted());
+        mav.addObject("platforms", platformService.findAllSorted());
+
+        mav.addObject("gameDTO", new GameDTO());
+        mav.setViewName("game/addGame");
+        return mav;
+
+    }
+
+    @PostMapping(path="/new")
+
+    public ModelAndView saveNewGame(
+            @ModelAttribute("gameDTO") @Valid GameDTO gameDTO,
+            BindingResult errors,
+            ModelAndView mav,
+            Principal principal
+    ){
+        String nickname = principal.getName();
+
+        if(errors.hasErrors()){
+            mav.setViewName("game/addGame");
+            return mav;
+        }
+        mav.setViewName("game/displayGame");
+        gameService.persist(gameDTO, nickname);
         return mav;
     }
 

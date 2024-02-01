@@ -16,5 +16,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     public List<Review> findTop5ByOrderByCreatedAtDesc();
 
     public Page<Review> findAllByGameId(Long id, Pageable pageable);
+
+
 }
 

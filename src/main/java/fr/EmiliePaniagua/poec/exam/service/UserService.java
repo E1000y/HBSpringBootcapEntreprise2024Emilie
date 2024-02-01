@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -29,6 +28,11 @@ public class UserService implements DAOServiceInterface<User>, UserDetailsServic
     public User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Override
+    public Object findAllSorted() {
+        return userRepository.findAll();
     }
 
     public User findByNickname(String nickname) {

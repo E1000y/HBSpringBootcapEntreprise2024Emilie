@@ -25,4 +25,9 @@ public class ClassificationService implements DAOServiceInterface<Classification
         Optional<Classification> optionalClassification = classificationRepository.findById(id);
         return optionalClassification.get();
     }
+
+    @Override
+    public Object findAllSorted() {
+        return classificationRepository.findAllByOrderByNameAsc();
+    }
 }

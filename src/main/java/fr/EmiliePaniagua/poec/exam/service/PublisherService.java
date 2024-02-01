@@ -26,4 +26,9 @@ public class PublisherService implements DAOServiceInterface<Publisher> {
         return platformOptional.get();
 
     }
+
+    @Override
+    public Object findAllSorted() {
+        return publisherRepository.findAllByOrderByNameAsc();
+    }
 }

@@ -31,6 +31,12 @@ public class ReviewService implements DAOServiceInterface<Review> {
                 .orElseThrow(()-> new NotFoundException("Review not found"));
 
     }
+
+    @Override
+    public Object findAllSorted() {
+        return reviewRepository.findAll();
+    }
+
     public Page<Review> findAll(Pageable pageable) {
         return reviewRepository.findAll(pageable);
     }

@@ -6,7 +6,8 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface GenreRepository extends JpaRepository<Genre, Long> {
+public interface GenreRepository extends JpaRepository<Genre, Long> , SortByNameInterface<Genre>{
+
 
 }
 

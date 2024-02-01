@@ -8,10 +8,12 @@ import java.util.List;
 
 
 @Repository
-public interface GameRepository extends JpaRepository<Game, Long> {
+public interface GameRepository extends JpaRepository<Game, Long>,SortByNameInterface<Game> {
 
     List<Game> findTop9ByOrderByPublishedAtDesc();
 
     List<Game> findTop6ByOrderByPublishedAtDesc();
+
+
 }
 

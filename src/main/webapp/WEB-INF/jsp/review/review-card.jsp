@@ -9,7 +9,7 @@
 <%--début du code pour la modération--%>
         <p class="text-center">
             Rédigé le ${dateUtils.getDateFormat(review.createdAt, "dd/MM/yyyy")}
-            par <a class="btn-link" href="${UrlRoute.URL_USER}/${userLogged.id}">${review.gamer.nickname}</a>
+            par <a class="btn-link" href="<%--${UrlRoute.URL_USER}/${userLogged.id}--%>#">${review.gamer.nickname}</a>
         <figcaption class="blockquote-footer text-center">
             <c:if test="${not empty review.moderator}">
                 Modéré par <cite title="Source Title">${review.moderator.nickname}</cite> -

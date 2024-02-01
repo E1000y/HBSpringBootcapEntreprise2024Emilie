@@ -19,4 +19,6 @@ public class UrlRoute {
     public static final String URL_USER ="/user";
 
     public static final String URL_EXPORT = "/export";
+
+    public static final String URL_GAME_NEW = "/game/new";
 }
