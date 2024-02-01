@@ -7,6 +7,9 @@ import fr.EmiliePaniagua.poec.exam.entity.Game;
 import fr.EmiliePaniagua.poec.exam.entity.User;
 import fr.EmiliePaniagua.poec.exam.routes.UrlRoute;
 import fr.EmiliePaniagua.poec.exam.service.*;
+import fr.EmiliePaniagua.poec.exam.utils.FileUploadService;
+import fr.EmiliePaniagua.poec.exam.utils.FlashMessage;
+import fr.EmiliePaniagua.poec.exam.utils.FlashMessageBuilder;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -15,7 +18,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -36,6 +41,8 @@ public class GameController {
     private final BusinessModelService businessModelService;
     private final PublisherService publisherService;
     private final PlatformService platformService;
+    private FileUploadService fileUploadService;
+    private FlashMessageBuilder flashMessageBuilder;
 
 
 
@@ -61,8 +68,35 @@ public class GameController {
 
 
 
-    @GetMapping(path="/{id}", name ="displayGame")
+    @GetMapping(path="/{slug}", name ="displayGame")
     public ModelAndView displayGame(
+            @PathVariable String slug,
+            ModelAndView mav,
+            Principal principal,
+            @PageableDefault(
+                    size = 6,
+                    sort = {"createdAt"},
+                    direction = Sort.Direction.DESC
+            ) Pageable pageable
+    ) {
+        Game game = gameService.findBySlug(slug);
+
+        if (principal != null) {
+            ReviewDTO dto = new ReviewDTO();
+            dto.setGameId(game.getId());
+            User user = userService.findByNickname(principal.getName());
+            dto.setUserId(user.getId());
+            mav.addObject("reviewDto", dto);
+        }
+
+        mav.setViewName("game/displayGame");
+        mav.addObject("pagedReviews", reviewService.findAllByGameSlug(slug,pageable));
+        mav.addObject("game", game);
+        return mav;
+
+    }
+    @GetMapping(path="/id/{id}", name ="displayGame")
+    public ModelAndView displayGameById(
             @PathVariable Long id,
             ModelAndView mav,
             Principal principal,
@@ -131,6 +165,7 @@ public class GameController {
             @ModelAttribute("gameDTO") @Valid GameDTO gameDTO,
             BindingResult errors,
             ModelAndView mav,
+            RedirectAttributes redirectAttributes,
             Principal principal
     ){
         String nickname = principal.getName();
@@ -139,8 +174,11 @@ public class GameController {
             mav.setViewName("game/addGame");
             return mav;
         }
-        mav.setViewName("game/displayGame");
-        gameService.persist(gameDTO, nickname);
+        redirectAttributes.addFlashAttribute(
+                "flashMessage",
+                flashMessageBuilder.createSuccessFlashMessage("Jeu créé avec succès !")
+        );
+        mav.setViewName("redirect:" + UrlRoute.URL_GAME + "/" + gameService.create(gameDTO, principal.getName()).getSlug());
         return mav;
     }
 
@@ -164,4 +202,62 @@ public class GameController {
 //        return mav;
 //    }
 
+    @GetMapping(value = UrlRoute.URL_GAME_UPLOAD_IMAGE_PATH)
+    public ModelAndView uploadImage(
+            ModelAndView mav,
+            @PathVariable String slug
+    ) {
+        mav.setViewName("game/upload-image");
+        return mav;
+    }
+
+    @PostMapping(value = UrlRoute.URL_GAME_UPLOAD_IMAGE_PATH)
+    public ModelAndView uploadImage(
+            ModelAndView mav,
+            @RequestParam("file") MultipartFile file,
+            @PathVariable String slug,
+            RedirectAttributes redirectAttributes
+    ) {
+        String fileName = fileUploadService.uploadFile(file, "game", slug);
+        if (fileName.contains("erreur")) {
+            redirectAttributes.addFlashAttribute(
+                    "flashMessage",
+                    flashMessageBuilder.createDangerFlashMessage(fileName)
+            );
+            mav.setViewName("game/upload-image");
+            return mav;
+        }
+        gameService.saveImageToGame(fileName, slug);
+        redirectAttributes.addFlashAttribute(
+                "flashMessage",
+                flashMessageBuilder.createSuccessFlashMessage("Image téléversée avec succès !")
+        );
+        mav.setViewName("redirect:" + UrlRoute.URL_GAME + "/" + slug);
+        return mav;
+    }
+
+    @GetMapping(UrlRoute.URL_GAME_SLUG)
+    public ModelAndView show(
+            @PathVariable String slug,
+            ModelAndView mav,
+            Principal principal,
+            @ModelAttribute("flashMessage") FlashMessage flashMessage,
+            @PageableDefault(
+                    size = 6, // nb Element par page
+                    sort = { "createdAt" }, // order by
+                    direction = Sort.Direction.DESC
+            ) Pageable pageable
+    ) {
+        mav.setViewName("game/show");
+        if (principal != null) {
+            mav.addObject("reviewDto", new ReviewDTO());
+        }
+        Game game = gameService.findBySlug(slug);
+        mav.addObject("flashMessage", flashMessage);
+        mav.addObject("game", game);
+        mav.addObject("pageReviews", reviewService.findAllByGame(game, pageable));
+        return mav;
+    }
 }
+
+

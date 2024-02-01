@@ -64,5 +64,31 @@ public class GameService implements DAOServiceInterface<Game> {
 
         }
 
+    public void saveImageToGame(String fileName, String slug) {
+        Game game = findBySlug(slug);
+        game.setImage(fileName);
+        gameRepository.flush();
+    }
+
+    public Game findBySlug(String slug) {
+        return gameRepository.findBySlug(slug);
+    }
+
+    public Game create(GameDTO gameDTO, String nickname) {
+        Game game = new Game();
+        game.setName(gameDTO.getName());
+        game.setDescription(gameDTO.getDescription());
+        game.setPublishedAt(LocalDate.parse(gameDTO.getPublishedAt()));
+        game.setGenre(gameDTO.getGenre());
+        game.setBusinessModel(gameDTO.getBusinessModel());
+        game.setPublisher(gameDTO.getPublisher());
+        game.setClassification(gameDTO.getClassification());
+        game.setPlatforms(gameDTO.getPlatforms());
+        game.setModerator((Moderator) userService.findByNickname(nickname));
+        game.setImage("https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg");
+        return gameRepository.saveAndFlush(game);
+    }
+
+
 }
 

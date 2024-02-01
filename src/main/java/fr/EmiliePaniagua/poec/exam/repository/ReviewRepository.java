@@ -1,5 +1,6 @@
 package fr.EmiliePaniagua.poec.exam.repository;
 
+import fr.EmiliePaniagua.poec.exam.entity.Game;
 import fr.EmiliePaniagua.poec.exam.entity.Gamer;
 import fr.EmiliePaniagua.poec.exam.entity.Review;
 import fr.EmiliePaniagua.poec.exam.entity.User;
@@ -15,6 +16,8 @@ import java.util.List;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
+    public List<Review> findAllByGame(Game game, Pageable pageable);
+
     public List<Review> findTop5ByOrderByCreatedAtDesc();
 
     public Page<Review> findAllByGameId(Long id, Pageable pageable);
@@ -25,5 +28,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Page<Review> findAllByGamerNickname(String nickname, Pageable pageable);
 
     Page<Review> findByModeratorIsNotNullAndGamerNickname(String nickname, Pageable pageable);
+
+   public List<Review> findAllByGameSlug(String slug, Pageable pageable);
 }
 

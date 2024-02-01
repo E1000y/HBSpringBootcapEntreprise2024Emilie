@@ -1,6 +1,7 @@
 package fr.EmiliePaniagua.poec.exam.entity;
 
 
+import fr.EmiliePaniagua.poec.exam.entity.interfaces.SluggerInterface;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import java.util.List;
 @Setter
 @Entity
 
-public class Game {
+public class Game implements SluggerInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,6 +30,8 @@ public class Game {
     private LocalDate publishedAt;
 
     private String image;
+
+    private String slug;
 
     @ManyToOne
     private BusinessModel businessModel;
@@ -53,5 +56,10 @@ public class Game {
 
     public void addPlatform(Platform platform) {
         platforms.add(platform);
+    }
+
+    @Override
+    public String getField() {
+        return name;
     }
 }

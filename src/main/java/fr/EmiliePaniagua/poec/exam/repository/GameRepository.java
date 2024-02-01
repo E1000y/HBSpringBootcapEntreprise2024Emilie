@@ -15,5 +15,6 @@ public interface GameRepository extends JpaRepository<Game, Long>,SortByNameInte
     List<Game> findTop6ByOrderByPublishedAtDesc();
 
 
+    Game findBySlug(String slug);
 }
 

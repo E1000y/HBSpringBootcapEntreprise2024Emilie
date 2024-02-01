@@ -1,4 +1,4 @@
-package fr.EmiliePaniagua.poec.exam.service.utils;
+package fr.EmiliePaniagua.poec.exam.utils;
 
 import fr.EmiliePaniagua.poec.exam.entity.Review;
 import fr.EmiliePaniagua.poec.exam.service.ReviewService;

@@ -95,4 +95,13 @@ public class ReviewService implements DAOServiceInterface<Review> {
 
 
 
-}}
+}
+
+    public Object findAllByGame(Game game, Pageable pageable) {
+        return reviewRepository.findAllByGame(game, pageable);
+    }
+
+    public Object findAllByGameSlug(String slug, Pageable pageable) {
+        return reviewRepository.findAllByGameSlug(slug, pageable);
+    }
+}

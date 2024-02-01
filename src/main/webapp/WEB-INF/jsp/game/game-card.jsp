@@ -3,7 +3,7 @@
 
 <div class="card bg-black">
     <div class="col text-center h-100">
-        <a href="${UrlRoute.URL_GAME}/${game.id}">
+        <a href="${UrlRoute.URL_GAME}/id/${game.id}">
             <img src = "${game.image}" class ="image-game rounded img-cropped">
         </a>
         <br>  ${game.name}
