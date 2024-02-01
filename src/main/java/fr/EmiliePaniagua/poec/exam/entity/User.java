@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,6 +23,8 @@ public abstract class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
+
+    protected String uuid = UUID.randomUUID().toString();
 
     @Column(nullable = false)
     protected String nickname;
@@ -63,5 +66,6 @@ public abstract class User implements UserDetails {
     }
 
     public boolean isModerator() {return this instanceof Moderator;}
+
 
 }

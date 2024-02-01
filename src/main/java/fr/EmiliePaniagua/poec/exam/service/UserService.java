@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
 
@@ -56,5 +57,10 @@ public class UserService implements DAOServiceInterface<User>, UserDetailsServic
             return List.of(new SimpleGrantedAuthority("ROLE_MODERATOR"));
         }
         return List.of(new SimpleGrantedAuthority("ROLE_GAMER"));
+    }
+
+    public User findByUuid(String uuid) {
+        return userRepository.findByUuid(uuid)
+                .orElseThrow(EntityNotFoundException::new);
     }
 }

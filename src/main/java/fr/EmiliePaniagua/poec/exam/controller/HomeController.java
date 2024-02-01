@@ -1,7 +1,9 @@
 package fr.EmiliePaniagua.poec.exam.controller;
 
+import fr.EmiliePaniagua.poec.exam.entity.User;
 import fr.EmiliePaniagua.poec.exam.service.GameService;
 import fr.EmiliePaniagua.poec.exam.service.ReviewService;
+import fr.EmiliePaniagua.poec.exam.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,7 @@ public class HomeController {
     private ReviewService reviewService;
 
     private GameService gameService;
+    private UserService userService;
 
     @GetMapping("/")
     public ModelAndView index(ModelAndView mav, Principal principal) {
@@ -27,7 +30,7 @@ public class HomeController {
         System.out.println("Un type est connecté, on affiche la home");
         mav.setViewName("index2");
         mav.addObject("games", gameService.findTop6ByPublishedAtDesc());
-        mav.addObject("reviews", reviewService.findTop5ByCreatedAtDesc());
+        mav.addObject("reviews", reviewService.findTop5ModeratorIsNotNullOrGamer(userService.findByNickname(principal.getName())));
         return mav;
     }
 

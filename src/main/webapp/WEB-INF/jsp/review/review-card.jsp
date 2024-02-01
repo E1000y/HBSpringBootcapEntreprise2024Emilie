@@ -9,14 +9,14 @@
 <%--début du code pour la modération--%>
         <p class="text-center">
             Rédigé le ${dateUtils.getDateFormat(review.createdAt, "dd/MM/yyyy")}
-            par <a class="btn-link" href="<%--${UrlRoute.URL_USER}/${userLogged.id}--%>#">${review.gamer.nickname}</a>
+            par <a class="btn-link" href="${UrlRoute.URL_USER}/${review.gamer.uuid}">${review.gamer.nickname}</a>
         <figcaption class="blockquote-footer text-center">
             <c:if test="${not empty review.moderator}">
                 Modéré par <cite title="Source Title">${review.moderator.nickname}</cite> -
                 le ${dateUtils.getDateFormat(review.moderatedAt, "dd/MM/yyyy")}
             </c:if>
             <c:if test="${empty review.moderator}">
-                <cite title="Source Title">En attente de moderation ⌛</cite>
+                <cite title="Source Title">En attente de modération ⌛</cite>
                 <c:if test="${userLogged.moderator}">
                     <br>
                     <a class="btn btn-link rating-20"
@@ -46,7 +46,7 @@
 
     <p class="text-center">
         Le ${dateUtils.getDateFormat(review.createdAt, "dd/MM/yyyy")}
-        par <a class="btn-link" href="#">${review.gamer.nickname}</a>
+        par <a class="btn-link" href="${UrlRoute.URL_USER}/${review.gamer.uuid}">${review.gamer.nickname}</a>
         <c:if test="${review.moderator != null}">
             <i class="fa-solid fa-check"></i>
         </c:if>

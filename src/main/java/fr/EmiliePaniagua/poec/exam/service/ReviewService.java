@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -43,8 +44,19 @@ public class ReviewService implements DAOServiceInterface<Review> {
 
     public Page<Review> findAllByGameId(Long id,Pageable pageable){return reviewRepository.findAllByGameId(id, pageable);}
 
-    public List<Review> findTop5ByCreatedAtDesc(){
-        return reviewRepository.findTop5ByOrderByCreatedAtDesc();
+//    public List<Review> findTop5ByCreatedAtDesc(){
+//
+//    }
+
+    public List<Review> findTop5ModeratorIsNotNullOrGamer(User user){
+
+        if(user instanceof Moderator){
+            return reviewRepository.findTop5ByOrderByCreatedAtDesc();
+        }
+        else{
+            return reviewRepository.findTop5ByModeratorIsNotNullOrGamer(user);
+        }
+
     }
 
     public Review persist(ReviewDTO reviewDTO){
@@ -57,6 +69,18 @@ public class ReviewService implements DAOServiceInterface<Review> {
 
     }
 
+    public Page<Review> findReviewsForProfile(
+            User user,
+            Principal principal,
+            Pageable pageable
+    ) {
+        if (user.getNickname().equals(principal.getName())) {
+            return reviewRepository.findAllByGamerNickname(user.getNickname(), pageable);
+        }
+        return reviewRepository.findByModeratorIsNotNullAndGamerNickname(user.getNickname(), pageable);
+    }
+
+
     public void moderateReview(String nickname, Long id, Long status) {
         Review review = findById(id);
         boolean isModerate = true;
@@ -68,5 +92,7 @@ public class ReviewService implements DAOServiceInterface<Review> {
             isModerate = false;
         }
         reviewRepository.flush();
+
+
 
 }}
