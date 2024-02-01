@@ -90,6 +90,7 @@
                 </f:label>
                 <input class="form-control" data-multiple-select-input="platforms"/>
                 <f:select path="platforms"
+                          multiple = "multiple"
                           items="${platforms}"
                           cssClass="form-select"
                           itemLabel="name"

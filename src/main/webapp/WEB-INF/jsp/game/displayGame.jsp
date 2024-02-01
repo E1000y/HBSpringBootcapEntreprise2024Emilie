@@ -24,9 +24,17 @@
                 </div>
 
                 <div class="col-9   ">
-                    <div >${game.description}</div>
+                    <div class="fs-1">${game.description}</div>
                     <div class="fs-2">Genre : ${game.genre.name}</div>
                     <div class="fs-2">${game.classification.name}</div>
+                    <div class="fs-2"><c:forEach var="platform" items="${game.platforms}">
+                        ${platform.name}
+                    </c:forEach>
+                        <div >${game.businessModel.name}</div>
+
+
+</div>
+
                 </div>
             </div>
             <div class="row">

@@ -7,24 +7,21 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a class="btn-link" href="${contextPath}/">Accueil</a></li>
-            <li class="breadcrumb-item"><a class="btn-link" href="${contextPath}${UrlRoute.URL_GAME}">Les jeux</a></li>
             <li class="breadcrumb-item active" aria-current="page">${user.nickname}</li>
-            <li class="breadcrumb-item active"><a class="btn-link" href="#user-reviews">Les commentaires</a></li>
+<%--            <li class="breadcrumb-item active"><a class="btn-link" href="#user-reviews">Les commentaires</a></li>--%>
         </ol>
     </nav>
     <h1>${user.nickname}</h1>
 
-    Date de naissance : ${user.birthAt}<br>
-    ${dateUtils.getAgeFromDate(user.birthAt)} ans
+    <div>Date de naissance : ${user.birthAt} (${dateUtils.getAgeFromDate(user.birthAt)} ans)</div>
+
     <c:if test="${user.moderator}">
         l'utilisateur est modérateur
     </c:if>
     <c:if test="${!user.moderator}">
         l'utilisateur n'est pas modérateur
-        ${dateUtils.getAgeFromDate(user.birthAt)} ans
     </c:if>
-    <div class="col d-flex justify-content-start">${dateUtils.getDateFormat(user.birthAt, "dd MMMM yyyy")}</div>
-    <div>0${user.birthAt}0</div>
+
 
 
     <c:set var="classGamer" scope="request" value="Gamer"/>
