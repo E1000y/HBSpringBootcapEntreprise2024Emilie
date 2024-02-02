@@ -9,38 +9,33 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="${contextPath}/">Home</a></li>
-                    <li class="breadcrumb-item"><a href="${UrlRoute.URL_GAME}/">Les jeux</a></li>
+                    <li class="breadcrumb-item"><a href="${UrlRoute.URL_GAME}">Les jeux</a></li>
                     <li class="breadcrumb-item active" aria-current="page">${game.name}</li>
                 </ol>
             </nav>
         </div>
-        <div class="container">
-            <div class="row d-flex">
-                <div class="col-3">
-        <%--            <h1>${game.name}</h1>--%>
-        <%--            <img class="w-10" src ="${game.image}">--%>
-        <%--            --%>
-                     <%@include file="game-card.jsp"%>
-                </div>
-
-                <div class="col-9   ">
-                    <div class="fs-6">${game.description}</div>
-                    <div class="fs-2">Genre : ${game.genre.name}</div>
-                    <div class="fs-2">${game.classification.name}</div>
-                    <div class="fs-2"><c:forEach var="platform" items="${game.platforms}">
-                        ${platform.name}
-                    </c:forEach>
-                        <div >${game.businessModel.name}</div>
-
-
-</div>
-
+        <div class="row">
+            <div class="col-3">
+                 <%@include file="game-card.jsp"%>
+            </div>
+            <div class="col-9">
+                <security:authorize access="hasRole('MODERATOR')">
+                    <a class="ms-1 link-green" href="${UrlRoute.URL_GAME_UPLOAD_IMAGE}/${game.slug}" title="Téléverser l'image du jeu">
+                        <i class="fa-solid fa-upload fa-2x"></i>
+                    </a>
+                </security:authorize>
+                <div class="fs-6 mt-3">${game.description}</div>
+                <div class="fs-2">Genre : ${game.genre.name}</div>
+                <div class="fs-2">${game.classification.name}</div>
+                <div class="fs-2"><c:forEach var="platform" items="${game.platforms}">
+                    ${platform.name}
+                </c:forEach>
+                    <div >${game.businessModel.name}</div>
                 </div>
             </div>
-            <div class="row">
-
+        </div>
+        <div class="row">
                 <div class="d-flex mt-3     ">
-
                     <security:authorize access="!hasRole('MODERATOR')">
                         <h2>Rédigez un commentaire sur le jeu</h2>
                         <button class="ms-2 btn btn-link"
@@ -85,15 +80,13 @@
                         </div>
                     </security:authorize>
 
-            </div>
+    </div>
 
-        </div>
-
-        </div>
-        </div>
         <div class="row">
             <%@ include file="../component/reviewList.jsp" %>
         </div>
+    </div>
+
 <%--        <%@include file="../review/pagedReviews.jsp"%>--%>
 
 <%@ include file="../footer.jsp" %>

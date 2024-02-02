@@ -24,7 +24,17 @@
 <jsp:include flush="true" page="${contextPath}/WEB-INF/jsp/base.jsp"/>
 
 <div class="container">
-    <div class="d-flex justify-content-between">
+    <div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="${contextPath}/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Les jeux</li>
+                <li class="breadcrumb-item"><a href="${UrlRoute.URL_REVIEW}">Les avis</a></li>
+            </ol>
+        </nav>
+    </div>
+    <h1>Les jeux</h1>
+    <div class="d-flex justify-content-between my-2">
         <div class="d-flex">
             <!-- Label à afficher -->
             <c:set var="label" scope="request" value="Date de sortie"/>
@@ -52,14 +62,14 @@
         </div>
         <div  class="mt-auto mb-2">
             <span>
-                page ${pagedGames.number + 1} sur ${pagedGames.totalPages}
+                page ${pagedGames.number + 1} sur ${pagedGames.totalPages} - total ${pagedGames.totalElements}
             </span>
         </div>
     </div>
     <div class="row">
         <c:forEach items="${pagedGames.content}" var="game">
             <div class="col-md-3 px-1">
-            <%@include file="game-card.jsp"%>
+                <%@include file="game-card.jsp"%>
             </div>
         </c:forEach>
     </div>

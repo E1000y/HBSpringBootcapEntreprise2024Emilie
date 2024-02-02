@@ -21,6 +21,17 @@
 <c:set var="title" scope="request" value="Avis"/>
 <jsp:include flush="true" page="${contextPath}/WEB-INF/jsp/base.jsp"/>
 
-<%@ include file="../component/reviewList.jsp" %>
+<div class="container">
+    <div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="${contextPath}/">Accueil</a></li>
+                <li class="breadcrumb-item"><a href="${UrlRoute.URL_GAME}">Les jeux</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Les avis</li>
+            </ol>
+        </nav>
+    </div>
+    <%@ include file="../component/reviewList.jsp" %>
+</div>
 
 <%@ include file="../footer.jsp" %>

@@ -16,6 +16,8 @@
         <script type="text/javascript" src="${contextPath}/js/page/search-bar.js"></script>
         <script type="text/javascript" src="${contextPath}/js/main.js"></script>
         <script type="text/javascript" src="${contextPath}/js/hide-form.js"></script>
+        <script type="text/javascript" src="${contextPath}/js/alert.js"></script>
+        <script type="text/javascript" src="${contextPath}/js/multiple-select.js"></script>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -40,7 +42,8 @@
                     <security:authorize access="isAuthenticated()">
                         <div class="d-flex justify-content-end">
                             <span class="ms-2">
-                                Bienvenue <security:authentication property="name"/>
+                                Bienvenue
+                                <a class="btn-link" href="${UrlRoute.URL_USER}/${userLogged.uuid}"><security:authentication property="name"/></a>
                             </span>
                         </div>
                         <div class="d-flex justify-content-end">
@@ -53,3 +56,10 @@
                 </div>
             </div>
         </nav>
+    <c:if test="${not empty flashMessage.message}">
+        <div class="container">
+            <div class="alert alert-${flashMessage.type}">
+                    ${flashMessage.message}
+            </div>
+        </div>
+    </c:if>

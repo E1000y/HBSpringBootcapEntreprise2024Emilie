@@ -24,14 +24,13 @@ import java.nio.file.Paths;
 import java.security.Principal;
 
 @Controller
-@RequestMapping()
 @AllArgsConstructor
 public class ReviewController {
 
     private final ReviewService reviewService;
     private final ExcelReviewService excelService;
 
-    @GetMapping(path=UrlRoute.URL_REVIEW+"/")
+    @GetMapping(path=UrlRoute.URL_REVIEW)
     public ModelAndView displayPagedReviews(
             ModelAndView mav,
             Principal principal,

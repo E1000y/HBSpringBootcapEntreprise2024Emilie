@@ -11,3 +11,10 @@
     color: var(--bs-primary);
 }
 
+.link-green {
+    color: palegreen;
+}
+
+.link-green:hover {
+    color: darkgreen;
+}

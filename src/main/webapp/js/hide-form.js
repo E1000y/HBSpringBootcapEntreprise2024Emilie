@@ -8,6 +8,12 @@ function initFormProfile() {
             if (container) {
                 button.addEventListener('click', () => {
                     container.classList.toggle("d-none");
+                    if (container.classList.contains("review-description")) {
+                        button.classList.toggle('d-none');
+                        const reviewCard = button.parentElement;
+                        const mainReviewCard = reviewCard.parentElement;
+                        mainReviewCard.classList.toggle('h-100');
+                    }
                 });
             }
         });

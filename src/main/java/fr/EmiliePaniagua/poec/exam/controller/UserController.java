@@ -39,7 +39,7 @@ public class UserController {
         mav.setViewName("user/show");
         User user = userService.findByUuid(uuid);
         mav.addObject("user", user);
-        mav.addObject("pageReviews", reviewService.findReviewsForProfile(user, principal, pageable));
+        mav.addObject("pagedReviews", reviewService.findReviewsForProfile(user, principal, pageable));
         return mav;
     }
 

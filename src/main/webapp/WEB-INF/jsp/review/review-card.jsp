@@ -2,14 +2,14 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 
-
-
-
 <div class="main-review-card w-100 bg-black rounded-3">
 <%--début du code pour la modération--%>
         <p class="text-center">
             Rédigé le ${dateUtils.getDateFormat(review.createdAt, "dd/MM/yyyy")}
-            par <a class="btn-link" href="${UrlRoute.URL_USER}/${review.gamer.uuid}">${review.gamer.nickname}</a>
+            <c:if test="${empty user}">
+                par <a class="btn-link" href="${UrlRoute.URL_USER}/${review.gamer.uuid}">${review.gamer.nickname}</a>
+            </c:if>
+        </p>
         <figcaption class="blockquote-footer text-center">
             <c:if test="${not empty review.moderator}">
                 Modéré par <cite title="Source Title">${review.moderator.nickname}</cite> -
@@ -34,34 +34,29 @@
                     </a>
                 </c:if>
             </c:if>
-        </figcaption>
-        </p>
-<%-- fin du code pour la modération   --%>
-<%--    --%>
-
-
-
-
-
-
-    <p class="text-center">
-        Le ${dateUtils.getDateFormat(review.createdAt, "dd/MM/yyyy")}
-        par <a class="btn-link" href="${UrlRoute.URL_USER}/${review.gamer.uuid}">${review.gamer.nickname}</a>
-        <c:if test="${review.moderator != null}">
-            <i class="fa-solid fa-check"></i>
-        </c:if>
-    </p>
+    </figcaption>
     <div class="review-card w-100">
-        <p class="review-description">
-            ${jspUtils.excerpt(review.description, 209)}
+        <p class="review-description"
+           data-hide-show-button="reviewDesc${review.id}"
+           data-hide-show-container="reviewDescComplete${review.id}"
+        >
+            <c:out value="${jspUtils.excerpt(review.description, 120)}" escapeXml="false"/>
+        </p>
+        <p class="review-description d-none"
+           data-hide-show-container="reviewDesc${review.id}"
+           data-hide-show-button="reviewDescComplete${review.id}"
+        >
+            <c:out value="${review.description}" escapeXml="false"/>
         </p>
         <div class="d-flex justify-content-between">
             <p class="${jspUtils.getCssClas(review.rating)}">
                 ${jspUtils.getStringRating(review.rating)} / 20
             </p>
-            <a class="btn-link" href="#">
-                ${review.game.name}
-            </a>
+            <c:if test="${empty game}">
+                <a class="btn-link" href="${UrlRoute.URL_GAME}/${review.game.slug}">
+                    ${review.game.name}
+                </a>
+            </c:if>
         </div>
     </div>
 </div>

@@ -1,0 +1,36 @@
+
+.main-review-card {
+    padding: 0.2em 0.8em;
+    width: 100%;
+    height: 280px;
+}
+
+.review-card {
+    width: 100%;
+    height: 100%;
+}
+
+.review-card .review-description {
+    text-justify: auto;
+    cursor: pointer;
+}
+
+.rating-5 {
+    color: red;
+}
+
+.rating-10 {
+    color: coral;
+}
+
+.rating-15 {
+    color: limegreen;
+}
+
+.rating-19 {
+    color: forestgreen;
+}
+
+.rating-20 {
+    color: green;
+}

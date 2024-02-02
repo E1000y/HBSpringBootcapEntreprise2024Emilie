@@ -48,13 +48,12 @@ public class ReviewService implements DAOServiceInterface<Review> {
 //
 //    }
 
-    public List<Review> findTop5ModeratorIsNotNullOrGamer(User user){
-
+    public Page<Review> findTop6ModeratorIsNotNullOrGamer(User user, Pageable pageable){
         if(user instanceof Moderator){
-            return reviewRepository.findTop5ByOrderByCreatedAtDesc();
+            return reviewRepository.findTop6ByOrderByCreatedAtDesc(pageable);
         }
         else{
-            return reviewRepository.findTop5ByModeratorIsNotNullOrGamer(user);
+            return reviewRepository.findTop6ByModeratorIsNotNullOrGamer(user, pageable);
         }
 
     }
@@ -97,11 +96,11 @@ public class ReviewService implements DAOServiceInterface<Review> {
 
 }
 
-    public Object findAllByGame(Game game, Pageable pageable) {
+    public Page<Review> findAllByGame(Game game, Pageable pageable) {
         return reviewRepository.findAllByGame(game, pageable);
     }
 
-    public Object findAllByGameSlug(String slug, Pageable pageable) {
+    public Page<Review> findAllByGameSlug(String slug, Pageable pageable) {
         return reviewRepository.findAllByGameSlug(slug, pageable);
     }
 }

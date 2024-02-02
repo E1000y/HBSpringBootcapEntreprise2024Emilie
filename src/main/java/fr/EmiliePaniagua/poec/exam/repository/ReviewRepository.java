@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    public List<Review> findAllByGame(Game game, Pageable pageable);
+    public Page<Review> findAllByGame(Game game, Pageable pageable);
 
     public List<Review> findTop5ByOrderByCreatedAtDesc();
 
@@ -29,6 +29,10 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Page<Review> findByModeratorIsNotNullAndGamerNickname(String nickname, Pageable pageable);
 
-   public List<Review> findAllByGameSlug(String slug, Pageable pageable);
+    Page<Review> findAllByGameSlug(String slug, Pageable pageable);
+
+    Page<Review> findTop6ByOrderByCreatedAtDesc(Pageable pageable);
+
+    Page<Review> findTop6ByModeratorIsNotNullOrGamer(User user, Pageable pageable);
 }
 

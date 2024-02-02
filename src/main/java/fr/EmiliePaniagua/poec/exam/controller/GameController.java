@@ -23,11 +23,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Controller
-@RequestMapping(UrlRoute.URL_GAME)
 @AllArgsConstructor
 public class GameController {
 
@@ -46,7 +43,7 @@ public class GameController {
 
 
 
-    @GetMapping(path="/")
+    @GetMapping(UrlRoute.URL_GAME)
     public ModelAndView displayPagedGames(
             ModelAndView mav,
             Principal principal,
@@ -66,66 +63,32 @@ public class GameController {
         return mav;
     }
 
-
-
-    @GetMapping(path="/{slug}", name ="displayGame")
-    public ModelAndView displayGame(
+    @GetMapping(UrlRoute.URL_GAME_SLUG)
+    public ModelAndView show(
             @PathVariable String slug,
             ModelAndView mav,
             Principal principal,
+            @ModelAttribute("flashMessage") FlashMessage flashMessage,
             @PageableDefault(
-                    size = 6,
-                    sort = {"createdAt"},
+                    size = 6, // nb Element par page
+                    sort = { "createdAt" }, // order by
                     direction = Sort.Direction.DESC
             ) Pageable pageable
     ) {
+        mav.setViewName("game/displayGame");
+        if (principal != null) {
+            mav.addObject("reviewDto", new ReviewDTO());
+        }
         Game game = gameService.findBySlug(slug);
-
-        if (principal != null) {
-            ReviewDTO dto = new ReviewDTO();
-            dto.setGameId(game.getId());
-            User user = userService.findByNickname(principal.getName());
-            dto.setUserId(user.getId());
-            mav.addObject("reviewDto", dto);
-        }
-
-        mav.setViewName("game/displayGame");
-        mav.addObject("pagedReviews", reviewService.findAllByGameSlug(slug,pageable));
+        mav.addObject("flashMessage", flashMessage);
         mav.addObject("game", game);
+        mav.addObject("pagedReviews", reviewService.findAllByGame(game, pageable));
         return mav;
-
-    }
-    @GetMapping(path="/id/{id}", name ="displayGame")
-    public ModelAndView displayGameById(
-            @PathVariable Long id,
-            ModelAndView mav,
-            Principal principal,
-            @PageableDefault(
-                    size = 6,
-                    sort = {"createdAt"},
-                    direction = Sort.Direction.DESC
-            ) Pageable pageable
-    ) {
-        Game game = gameService.findById(id);
-
-        if (principal != null) {
-            ReviewDTO dto = new ReviewDTO();
-            dto.setGameId(game.getId());
-            User user = userService.findByNickname(principal.getName());
-            dto.setUserId(user.getId());
-            mav.addObject("reviewDto", dto);
-        }
-
-        mav.setViewName("game/displayGame");
-        mav.addObject("pagedReviews", reviewService.findAllByGameId(id,pageable));
-        mav.addObject("game", game);
-        return mav;
-
     }
 
-    @PostMapping(path="/id/{id}")
+    @PostMapping(path = UrlRoute.URL_GAME_SLUG)
     public ModelAndView createReview(
-            @PathVariable Long id,
+            @PathVariable String slug,
             @ModelAttribute("reviewDto") @Valid ReviewDTO reviewDto,
             BindingResult result,//c'est quoi? rep dono : contient les erreurs du formulaire
             ModelAndView mav
@@ -133,76 +96,16 @@ public class GameController {
         System.out.println("error");
         if(result.hasErrors()){
             mav.setViewName("game/displayGame");
-            mav.addObject("game", gameService.findById(id));
+            mav.addObject("game", gameService.findBySlug(slug));
             return mav;
         }
         reviewService.persist(reviewDto);
 
-        mav.setViewName("redirect:/game/id/"+id);
-        return mav;
-    }
-    @GetMapping(path="/new")
-
-    public ModelAndView createGame(
-            ModelAndView mav
-    ){
-        mav.addObject("gameDto", new GameDTO());
-        mav.addObject("genres", genreService.findAllSorted());
-        mav.addObject("classifications", classificationService.findAllSorted());
-        mav.addObject("businessModels", businessModelService.findAllSorted());
-        mav.addObject("publishers", publisherService.findAllSorted());
-        mav.addObject("platforms", platformService.findAllSorted());
-
-        mav.addObject("gameDTO", new GameDTO());
-        mav.setViewName("game/addGame");
-        return mav;
-
-    }
-
-    @PostMapping(path="/new")
-
-    public ModelAndView saveNewGame(
-            @ModelAttribute("gameDTO") @Valid GameDTO gameDTO,
-            BindingResult errors,
-            ModelAndView mav,
-            RedirectAttributes redirectAttributes,
-            Principal principal
-    ){
-        String nickname = principal.getName();
-
-        if(errors.hasErrors()){
-            mav.setViewName("game/addGame");
-            return mav;
-        }
-        redirectAttributes.addFlashAttribute(
-                "flashMessage",
-                flashMessageBuilder.createSuccessFlashMessage("Jeu créé avec succès !")
-        );
-        mav.setViewName("redirect:" + UrlRoute.URL_GAME + "/" + gameService.create(gameDTO, principal.getName()).getSlug());
+        mav.setViewName("redirect:" + UrlRoute.URL_GAME + "/" + slug);
         return mav;
     }
 
-//    @GetMapping(path="/{id}")
-//    public ModelAndView displayPagedReviews(
-//            ModelAndView mav,
-//            Principal principal,
-//            @PageableDefault(
-//                    size = 6,
-//                    sort = {"createdAt"},
-//                    direction = Sort.Direction.DESC
-//            ) Pageable pageable)
-//    {
-//        if(principal == null){
-//            mav.setViewName("redirect:/login");
-//            return mav;
-//        }
-//
-//        mav.addObject("pagedReviews", reviewService.findAllByGameId(id,pageable));
-//        mav.setViewName("game/displayGame");
-//        return mav;
-//    }
-
-    @GetMapping(value = UrlRoute.URL_GAME_UPLOAD_IMAGE_PATH)
+    @GetMapping(UrlRoute.URL_GAME_UPLOAD_IMAGE_PATH)
     public ModelAndView uploadImage(
             ModelAndView mav,
             @PathVariable String slug
@@ -211,7 +114,7 @@ public class GameController {
         return mav;
     }
 
-    @PostMapping(value = UrlRoute.URL_GAME_UPLOAD_IMAGE_PATH)
+    @PostMapping(UrlRoute.URL_GAME_UPLOAD_IMAGE_PATH)
     public ModelAndView uploadImage(
             ModelAndView mav,
             @RequestParam("file") MultipartFile file,
@@ -236,26 +139,40 @@ public class GameController {
         return mav;
     }
 
-    @GetMapping(UrlRoute.URL_GAME_SLUG)
-    public ModelAndView show(
-            @PathVariable String slug,
+    @GetMapping(path = UrlRoute.URL_GAME_NEW)
+    public ModelAndView createGame(
+            ModelAndView mav
+    ){
+        mav.addObject("gameDto", new GameDTO());
+        mav.addObject("genres", genreService.findAllSorted());
+        mav.addObject("classifications", classificationService.findAllSorted());
+        mav.addObject("businessModels", businessModelService.findAllSorted());
+        mav.addObject("publishers", publisherService.findAllSorted());
+        mav.addObject("platforms", platformService.findAllSorted());
+
+        mav.addObject("gameDTO", new GameDTO());
+        mav.setViewName("game/addGame");
+        return mav;
+
+    }
+
+    @PostMapping(path = UrlRoute.URL_GAME_NEW)
+    public ModelAndView saveNewGame(
+            @ModelAttribute("gameDTO") @Valid GameDTO gameDTO,
+            BindingResult errors,
             ModelAndView mav,
-            Principal principal,
-            @ModelAttribute("flashMessage") FlashMessage flashMessage,
-            @PageableDefault(
-                    size = 6, // nb Element par page
-                    sort = { "createdAt" }, // order by
-                    direction = Sort.Direction.DESC
-            ) Pageable pageable
-    ) {
-        mav.setViewName("game/show");
-        if (principal != null) {
-            mav.addObject("reviewDto", new ReviewDTO());
+            RedirectAttributes redirectAttributes,
+            Principal principal
+    ){
+        if(errors.hasErrors()){
+            mav.setViewName("game/addGame");
+            return mav;
         }
-        Game game = gameService.findBySlug(slug);
-        mav.addObject("flashMessage", flashMessage);
-        mav.addObject("game", game);
-        mav.addObject("pageReviews", reviewService.findAllByGame(game, pageable));
+        redirectAttributes.addFlashAttribute(
+                "flashMessage",
+                flashMessageBuilder.createSuccessFlashMessage("Jeu créé avec succès !")
+        );
+        mav.setViewName("redirect:" + UrlRoute.URL_GAME + "/" + gameService.create(gameDTO, principal.getName()).getSlug());
         return mav;
     }
 }
