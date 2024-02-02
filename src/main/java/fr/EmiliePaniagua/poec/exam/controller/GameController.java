@@ -123,7 +123,7 @@ public class GameController {
 
     }
 
-    @PostMapping(path="/{id}")
+    @PostMapping(path="/id/{id}")
     public ModelAndView createReview(
             @PathVariable Long id,
             @ModelAttribute("reviewDto") @Valid ReviewDTO reviewDto,
@@ -138,7 +138,7 @@ public class GameController {
         }
         reviewService.persist(reviewDto);
 
-        mav.setViewName("redirect:/game/"+id);
+        mav.setViewName("redirect:/game/id/"+id);
         return mav;
     }
     @GetMapping(path="/new")
